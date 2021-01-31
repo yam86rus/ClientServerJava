@@ -24,6 +24,7 @@ public class Server {
             );
 
             String request = reader.readLine();
+            System.out.println(request);
 
 //            String response = "#" + count + " request length " + request.length();
             String response = "HTTP/1.0 200 OK\r\n" +

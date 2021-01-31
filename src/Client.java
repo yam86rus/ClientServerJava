@@ -1,34 +1,47 @@
 import java.io.*;
 import java.net.*;
+import java.util.Date;
+import java.net.InetAddress;
 
 public class Client {
     public static void main(String[] args) throws IOException {
+        while (true) {
+            try {
+                Thread.sleep(15000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-
-        Socket clientSocket =
+            Socket clientSocket =
                 new Socket("127.0.0.1", 8000);
 
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(
-                        clientSocket.getOutputStream()
-                )
-        );
+            Date date = new Date();
+            long currentTime = date.getTime();
+            String computerName = InetAddress.getLocalHost().getHostName();
+            InetAddress IP = InetAddress.getLocalHost();
 
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        clientSocket.getInputStream()
-                )
-        );
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(
+                            clientSocket.getOutputStream()
+                    )
+            );
 
-        writer.write("Get me some information");
-        writer.newLine();
-        writer.flush();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            clientSocket.getInputStream()
+                    )
+            );
 
-        String response = reader.readLine();
-        System.out.println(response);
+            writer.write(date + " ; " + computerName + " ; " + IP.getHostAddress());
+            writer.newLine();
+            writer.flush();
 
-        writer.close();
-        reader.close();
+            String response = reader.readLine();
+            System.out.println(response);
+
+            writer.close();
+            reader.close();
         clientSocket.close();
+        }
     }
 }
