@@ -7,7 +7,7 @@ public class Client {
     public static void main(String[] args) throws IOException {
         while (true) {
             try {
-                Thread.sleep(15000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -32,7 +32,7 @@ public class Client {
                     )
             );
 
-            writer.write(date + " ; " + computerName + " ; " + IP.getHostAddress());
+            writer.write("kassa;" + date + ";" + computerName + ";" + IP.getHostAddress());
             writer.newLine();
             writer.flush();
 

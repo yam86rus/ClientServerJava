@@ -1,7 +1,39 @@
 import java.net.*;
 import java.io.*;
+import java.util.Arrays;
 
 public class Server {
+    static String readHtml(){
+        StringBuilder sb = new StringBuilder();
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Максим\\IdeaProjects\\ClientServerJava\\src\\template.html"))) {
+            String str;
+            while ((str=bufferedReader.readLine())!=null){
+                sb.append(str);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    static String showInfo(){
+        return  "HTTP/1.0 200 OK\r\n" +
+                "Content-type: text/html\r\n" +
+                "\r\n" + readHtml();
+//                "<!doctype html>\n" +
+//                "<html lang=\"en\">\n" +
+//                "<head>\n" +
+//                "    <meta charset='UTF-8'>\n" +
+//                "    <meta name='viewport'\n" +
+//                "          content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>\n" +
+//                "    <meta http-equiv='X-UA-Compatible\" content=\"ie=edge'>\n" +
+//                "    <title>Document</title>\n" +
+//                "</head>\n" +
+//                "<h1>Клиент - пользователь, нужно вывести информацию по кассам</h1>";
+    }
+
     public static void main(String[] args) throws IOException {
         int count = 0;
         ServerSocket serverSocket = new ServerSocket(8000);
@@ -24,13 +56,16 @@ public class Server {
             );
 
             String request = reader.readLine();
-            System.out.println(request);
+            String[] arrays = request.split(";");
+            System.out.println(Arrays.toString(arrays));
+            String response = "";
+            if (arrays[0].equals("kassa")) {
+                response = "Клиент - касса, можно ничего не показывать";
+            } else {
+                response = showInfo();
+            }
 
-//            String response = "#" + count + " request length " + request.length();
-            String response = "HTTP/1.0 200 OK\r\n" +
-                    "Content-type: text/html\r\n" +
-                    "\r\n" +
-                    " Hello!!! :) ";
+
             writer.write(response);
             writer.newLine();
             writer.flush();
